@@ -27,4 +27,7 @@ sqlc-compile:
 sqlc-generate:
 	docker run --rm -v "%cd%:/src" -w /src kjconroy/sqlc generate
 
+test:
+	go test -v -cover ./...
+
 .PHONY: network postgres createdb migrateup migratedown sqlc-init sqlc-compile sqlc-generate
