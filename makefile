@@ -30,4 +30,7 @@ sqlc-generate:
 test:
 	go test -v -cover ./...
 
-.PHONY: network postgres createdb migrateup migratedown sqlc-init sqlc-compile sqlc-generate
+server: 
+	go run main.go
+
+.PHONY: network postgres createdb migrateup migratedown sqlc-init sqlc-compile sqlc-generate server
