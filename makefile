@@ -33,4 +33,7 @@ test:
 server: 
 	go run main.go
 
-.PHONY: network postgres createdb migrateup migratedown sqlc-init sqlc-compile sqlc-generate server
+mock:
+	mockgen -package mockdb -destination db/mock/store.go github.com/AradTenenbaum/BackendCourse/db/sqlc Store
+
+.PHONY: network postgres createdb migrateup migratedown sqlc-init sqlc-compile sqlc-generate server mock
