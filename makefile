@@ -9,8 +9,14 @@ postgres:
 migrateup:
 	migrate -path db/migration -database "$(DB_URL)" -verbose up
 
+migrateup1:
+	migrate -path db/migration -database "$(DB_URL)" -verbose up 1
+
 migratedown:
 	migrate -path db/migration -database "$(DB_URL)" -verbose down
+
+migratedown1:
+	migrate -path db/migration -database "$(DB_URL)" -verbose down 1
 
 createdb:
 	docker exec -it postgres createdb --username=root --owner=root simple_bank
@@ -36,4 +42,4 @@ server:
 mock:
 	mockgen -package mockdb -destination db/mock/store.go github.com/AradTenenbaum/BackendCourse/db/sqlc Store
 
-.PHONY: network postgres createdb migrateup migratedown sqlc-init sqlc-compile sqlc-generate server mock
+.PHONY: network postgres createdb migrateup migrateup1 migratedown migratedown1 sqlc-init sqlc-compile sqlc-generate server mock

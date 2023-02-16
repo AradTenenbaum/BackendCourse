@@ -9,7 +9,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var testQuery *Queries
+var testQueries *Queries
 var testDB *sql.DB
 
 func TestMain(m *testing.M) {
@@ -23,7 +23,7 @@ func TestMain(m *testing.M) {
 		log.Fatal("cannot connect db:", err)
 	}
 
-	testQuery = New(testDB)
+	testQueries = New(testDB)
 
 	m.Run()
 }
