@@ -9,6 +9,9 @@ postgres:
 migrateup:
 	migrate -path db/migration -database "$(DB_URL)" -verbose up
 
+migrateup-aws:
+	migrate -path db/migration -database "postgresql://root:Femu9LcQ3szk8KVht7TD@simple-bank.cqbf8tifnnnx.eu-west-1.rds.amazonaws.com:5432/simple_bank" -verbose up
+
 migrateup1:
 	migrate -path db/migration -database "$(DB_URL)" -verbose up 1
 
