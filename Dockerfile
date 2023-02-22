@@ -15,9 +15,10 @@ COPY app.env .
 COPY start.sh .
 COPY wait-for.sh .
 COPY db/migration ./migration
+# Make file executable
+RUN chmod +x start.sh
+RUN chmod +x ./wait-for.sh
 
 EXPOSE 8080
 CMD [ "/app/main" ]
-# Change to executable
-RUN chmod +x start.sh
-ENTRYPOINT [ "/app/start.sh" ]
+ENTRYPOINT [ "sh", "/app/start.sh" ]
