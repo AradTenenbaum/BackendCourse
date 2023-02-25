@@ -1,4 +1,5 @@
 DB_URL=postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable
+AWS_DB_URL=postgresql://root:Femu9LcQ3szk8KVht7TD@simple-bank.cqbf8tifnnnx.eu-west-1.rds.amazonaws.com:5432/simple_bank
 
 network:
 	docker network create bank-network
@@ -10,7 +11,7 @@ migrateup:
 	migrate -path db/migration -database "$(DB_URL)" -verbose up
 
 migrateup-aws:
-	migrate -path db/migration -database "postgresql://root:Femu9LcQ3szk8KVht7TD@simple-bank.cqbf8tifnnnx.eu-west-1.rds.amazonaws.com:5432/simple_bank" -verbose up
+	migrate -path db/migration -database "$(AWS_DB_URL)" -verbose up
 
 migrateup1:
 	migrate -path db/migration -database "$(DB_URL)" -verbose up 1
@@ -36,6 +37,12 @@ sqlc-compile:
 sqlc-generate:
 	docker run --rm -v "%cd%:/src" -w /src kjconroy/sqlc generate
 
+db_docs:
+	dbdocs build doc/db.dbml
+
+db_schema:
+	dbml2sql --postgres -o doc/schema.sql doc/db.dbml
+
 test:
 	go test -v -cover ./...
 
@@ -45,4 +52,4 @@ server:
 mock:
 	mockgen -package mockdb -destination db/mock/store.go github.com/AradTenenbaum/BackendCourse/db/sqlc Store
 
-.PHONY: network postgres createdb migrateup migrateup1 migratedown migratedown1 sqlc-init sqlc-compile sqlc-generate server mock
+.PHONY: network postgres createdb migrateup migrateup1 migratedown migratedown1 sqlc-init sqlc-compile sqlc-generate, db_docs, db_schema, test, server, mock
