@@ -58,4 +58,7 @@ proto:
     --go-grpc_out=pb --go-grpc_opt=paths=source_relative \
     proto/*.proto
 
+grpc-test-client:
+	npm start --prefix grpc_test_client
+
 .PHONY: network postgres createdb migrateup migrateup1 migratedown migratedown1 sqlc-init sqlc-compile sqlc-generate, db_docs, db_schema, test, server, mock, proto

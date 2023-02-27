@@ -4,7 +4,7 @@
 // - protoc             v4.22.0
 // source: service_simple_bank.proto
 
-package BackendCourse
+package pb
 
 import (
 	context "context"
