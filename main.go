@@ -3,17 +3,20 @@ package main
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"log"
 	"net"
 	"net/http"
 
 	"github.com/AradTenenbaum/BackendCourse/api"
 	db "github.com/AradTenenbaum/BackendCourse/db/sqlc"
+	_ "github.com/AradTenenbaum/BackendCourse/doc/statik"
 	"github.com/AradTenenbaum/BackendCourse/gapi"
 	"github.com/AradTenenbaum/BackendCourse/pb"
 	"github.com/AradTenenbaum/BackendCourse/util"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	_ "github.com/lib/pq"
+	"github.com/rakyll/statik/fs"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -31,8 +34,17 @@ func main() {
 	}
 
 	store := db.NewStore(conn)
-	go runGatewayServer(config, store)
-	runGrpcServer(config, store)
+	fmt.Println("Choose server type:")
+	fmt.Println("1. HTTP")
+	fmt.Println("2. gRPC")
+	var choice int
+	fmt.Scan(&choice)
+	if choice == 1 {
+		runGinServer(config, store)
+	} else if choice == 2 {
+		go runGatewayServer(config, store)
+		runGrpcServer(config, store)
+	}
 }
 
 func runGrpcServer(config util.Config, store db.Store) {
@@ -86,9 +98,13 @@ func runGatewayServer(config util.Config, store db.Store) {
 	mux := http.NewServeMux()
 	mux.Handle("/", grpcMux)
 
-	// Make the swagger run on '/swagger'
-	fs := http.FileServer(http.Dir("./doc/swagger"))
-	mux.Handle("/swagger/", http.StripPrefix("/swagger/", fs))
+	// Make the swagger ui run on '/swagger'
+	statikFS, err := fs.New()
+	if err != nil {
+		log.Fatal("cannot create statik fs:", err)
+	}
+	swaggerHandler := http.StripPrefix("/swagger/", http.FileServer(statikFS))
+	mux.Handle("/swagger/", swaggerHandler)
 
 	listener, err := net.Listen("tcp", config.HTTPServerAddress)
 	if err != nil {
