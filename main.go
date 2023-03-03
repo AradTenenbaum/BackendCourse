@@ -14,6 +14,9 @@ import (
 	"github.com/AradTenenbaum/BackendCourse/gapi"
 	"github.com/AradTenenbaum/BackendCourse/pb"
 	"github.com/AradTenenbaum/BackendCourse/util"
+	"github.com/golang-migrate/migrate/v4"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	_ "github.com/lib/pq"
 	"github.com/rakyll/statik/fs"
@@ -33,18 +36,33 @@ func main() {
 		log.Fatal("cannot connect db:", err)
 	}
 
+	runDBMigration(config.MigrationURL, config.DBSource)
+
 	store := db.NewStore(conn)
 	fmt.Println("Choose server type:")
 	fmt.Println("1. HTTP")
 	fmt.Println("2. gRPC")
-	var choice int
-	fmt.Scan(&choice)
+	choice := 2
+	// fmt.Scan(&choice)
 	if choice == 1 {
 		runGinServer(config, store)
 	} else if choice == 2 {
 		go runGatewayServer(config, store)
 		runGrpcServer(config, store)
 	}
+}
+
+func runDBMigration(migrationURL string, dbSource string) {
+	migration, err := migrate.New(migrationURL, dbSource)
+	if err != nil {
+		log.Fatal("cannot create new migrate instance:", err)
+	}
+
+	if err = migration.Up(); err != nil && err != migrate.ErrNoChange {
+		log.Fatal("failed to run migrate up:", err)
+	}
+
+	log.Println("db migrated succesfuly")
 }
 
 func runGrpcServer(config util.Config, store db.Store) {
