@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"log"
 	"net"
 	"net/http"
@@ -25,6 +24,11 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
+const (
+	gRPC = "gRPC"
+	HTTP = "HTTP"
+)
+
 func main() {
 	config, err := util.LoadConfig(".")
 	if err != nil {
@@ -39,14 +43,9 @@ func main() {
 	runDBMigration(config.MigrationURL, config.DBSource)
 
 	store := db.NewStore(conn)
-	fmt.Println("Choose server type:")
-	fmt.Println("1. HTTP")
-	fmt.Println("2. gRPC")
-	choice := 2
-	// fmt.Scan(&choice)
-	if choice == 1 {
+	if config.ServerType == HTTP {
 		runGinServer(config, store)
-	} else if choice == 2 {
+	} else if config.ServerType == gRPC {
 		go runGatewayServer(config, store)
 		runGrpcServer(config, store)
 	}

@@ -16,6 +16,7 @@ type Config struct {
 	TokenSymmetricKey    string        `mapstructure:"TOKEN_SYMMETRIC_KEY"`
 	AccessTokenDuration  time.Duration `mapstructure:"ACCESS_TOKEN_DURATION"`
 	RefreshTokenDuration time.Duration `mapstructure:"REFRESH_TOKEN_DURATION"`
+	ServerType           string        `mapstructure:"SERVER_TYPE"`
 }
 
 // LoadConfig will read configuration from a file or environment variables
