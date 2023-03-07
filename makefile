@@ -66,4 +66,7 @@ proto:
 grpc-test-client:
 	npm start --prefix grpc_test_client
 
-.PHONY: network postgres createdb migrateup migrateup1 migratedown migratedown1 sqlc-init sqlc-compile sqlc-generate, db_docs, db_schema, test, server, mock, proto
+redis:
+	docker run --name redis -p 6379:6379 -d redis:7.0.9-alpine
+
+.PHONY: network postgres createdb migrateup migrateup1 migratedown migratedown1 sqlc-init sqlc-compile sqlc-generate db_docs db_schema test server mock proto redis
