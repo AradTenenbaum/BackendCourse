@@ -1,5 +1,5 @@
 # Simple Bank API
-### Api built with Golang that implement bank functionalities
+### Api built with Golang that implements bank functionality
 
 The api is built using - Golang, Sqlc, PostgreSql, Redis, Github Actions CI, Docker, Kubernetes, gRPC and HTTP.
 You can dynamically switch between gRPC server and HTTP server by the SERVER_TYPE in the environments variables.
