@@ -21,7 +21,7 @@ func (server *Server) GetAccount(ctx context.Context, req *pb.GetAccountRequest)
 		if err == sql.ErrNoRows {
 			return nil, status.Errorf(codes.NotFound, "Account not found")
 		}
-		return nil, status.Errorf(codes.Internal, "Can't get account: %w", err)
+		return nil, status.Errorf(codes.Internal, "Can't get account: %s", err)
 	}
 
 	if account.Owner != authPayload.Username {
