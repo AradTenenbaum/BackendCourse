@@ -22,6 +22,9 @@ migratedown:
 migratedown1:
 	migrate -path db/migration -database "$(DB_URL)" -verbose down 1
 
+new_migration:
+	migrate create -ext sql -dir db/migration -seq $(name)
+
 createdb:
 	docker exec -it postgres createdb --username=root --owner=root simple_bank
 
@@ -44,7 +47,7 @@ db_schema:
 	dbml2sql --postgres -o doc/schema.sql doc/db.dbml
 
 test:
-	go test -v -cover ./...
+	go test -v -cover -short ./...
 
 server: 
 	go run main.go
@@ -69,4 +72,4 @@ grpc-test-client:
 redis:
 	docker run --name redis -p 6379:6379 -d redis:7.0.9-alpine
 
-.PHONY: network postgres createdb migrateup migrateup1 migratedown migratedown1 sqlc-init sqlc-compile sqlc-generate db_docs db_schema test server mock proto redis
+.PHONY: network postgres createdb migrateup migrateup1 migratedown migratedown1 new_migration sqlc-init sqlc-compile sqlc-generate db_docs db_schema test server mock proto redis

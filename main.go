@@ -15,6 +15,7 @@ import (
 	db "github.com/AradTenenbaum/BackendCourse/db/sqlc"
 	_ "github.com/AradTenenbaum/BackendCourse/doc/statik"
 	"github.com/AradTenenbaum/BackendCourse/gapi"
+	"github.com/AradTenenbaum/BackendCourse/mail"
 	"github.com/AradTenenbaum/BackendCourse/pb"
 	"github.com/AradTenenbaum/BackendCourse/util"
 	"github.com/AradTenenbaum/BackendCourse/worker"
@@ -62,7 +63,7 @@ func main() {
 	if config.ServerType == HTTP {
 		runGinServer(config, store)
 	} else if config.ServerType == gRPC {
-		go runTaskProcessor(redisOpt, store)
+		go runTaskProcessor(config, redisOpt, store)
 		go runGatewayServer(config, store, taskDistributor)
 		runGrpcServer(config, store, taskDistributor)
 	}
@@ -81,8 +82,10 @@ func runDBMigration(migrationURL string, dbSource string) {
 	log.Info().Msg("db migrated succesfuly")
 }
 
-func runTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store) {
-	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store)
+func runTaskProcessor(config util.Config, redisOpt asynq.RedisClientOpt, store db.Store) {
+	mailer := mail.NewGmailSender(config.EmailSenderName, config.EmailSenderAddress, config.EmailSenderPassword)
+	taskProcessor := worker.NewRedisTaskProcessor(redisOpt, store, mailer)
+
 	log.Info().Msg("start task processor")
 
 	err := taskProcessor.Start()
