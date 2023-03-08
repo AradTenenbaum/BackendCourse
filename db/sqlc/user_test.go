@@ -146,3 +146,13 @@ func TestUpdateUserAllFields(t *testing.T) {
 	require.NotEqual(t, oldUser.FullName, updatedUser.FullName)
 	require.Equal(t, newFullName, updatedUser.FullName)
 }
+
+func TestSetEmailVerified(t *testing.T) {
+	user := createRandomUser(t)
+
+	userAfterEmailVerification, err := testQueries.SetEmailVerified(context.Background(), user.Username)
+	require.NoError(t, err)
+	require.NotEmpty(t, userAfterEmailVerification)
+	require.Equal(t, userAfterEmailVerification.Username, user.Username)
+	require.True(t, userAfterEmailVerification.IsEmailVerified)
+}

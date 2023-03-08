@@ -6,3 +6,8 @@ INSERT INTO verify_emails (
 ) VALUES (
     $1, $2, $3
 ) RETURNING *;
+
+-- name: SetUsedVerifyEmail :one
+UPDATE verify_emails SET is_used = true
+WHERE id = $1 AND secret_code = $2
+RETURNING *;

@@ -156,6 +156,14 @@ func runGatewayServer(config util.Config, store db.Store, taskDistributor worker
 	swaggerHandler := http.StripPrefix("/swagger/", http.FileServer(statikFS))
 	mux.Handle("/swagger/", swaggerHandler)
 
+	// Http server
+	httpServer, err := gapi.NewHttpServer(config, store)
+	if err != nil {
+		log.Fatal().Err(err).Msg("cannot start http server")
+	}
+	// verify email page
+	mux.Handle("/verify_email", http.HandlerFunc(httpServer.VerifyEmailHandlerFunc))
+
 	listener, err := net.Listen("tcp", config.HTTPServerAddress)
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot create listener")

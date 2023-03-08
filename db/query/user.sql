@@ -23,3 +23,8 @@ SET
 WHERE 
   username = sqlc.arg(username)
 RETURNING *;
+
+-- name: SetEmailVerified :one
+UPDATE users SET is_email_verified = true
+WHERE username = $1
+RETURNING *;

@@ -28,6 +28,8 @@ type Querier interface {
 	ListAccounts(ctx context.Context, arg ListAccountsParams) ([]Account, error)
 	ListEntries(ctx context.Context, arg ListEntriesParams) ([]Entry, error)
 	ListTransfers(ctx context.Context, arg ListTransfersParams) ([]Transfer, error)
+	SetEmailVerified(ctx context.Context, username string) (User, error)
+	SetUsedVerifyEmail(ctx context.Context, arg SetUsedVerifyEmailParams) (VerifyEmail, error)
 	UpdateAccount(ctx context.Context, arg UpdateAccountParams) (Account, error)
 	UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error)
 }

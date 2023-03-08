@@ -68,6 +68,27 @@ func (q *Queries) GetUser(ctx context.Context, username string) (User, error) {
 	return i, err
 }
 
+const setEmailVerified = `-- name: SetEmailVerified :one
+UPDATE users SET is_email_verified = true
+WHERE username = $1
+RETURNING username, hashed_password, full_name, email, password_changed_at, created_at, is_email_verified
+`
+
+func (q *Queries) SetEmailVerified(ctx context.Context, username string) (User, error) {
+	row := q.db.QueryRowContext(ctx, setEmailVerified, username)
+	var i User
+	err := row.Scan(
+		&i.Username,
+		&i.HashedPassword,
+		&i.FullName,
+		&i.Email,
+		&i.PasswordChangedAt,
+		&i.CreatedAt,
+		&i.IsEmailVerified,
+	)
+	return i, err
+}
+
 const updateUser = `-- name: UpdateUser :one
 UPDATE users
 SET
