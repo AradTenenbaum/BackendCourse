@@ -1,3 +1,4 @@
-ALTER TABLE "accounts" DROP FOREIGN KEY ("currency") REFERENCES "currency" ("desc");
+
+-- ALTER TABLE "accounts" DROP CONSTRAINT ("currency");
 
 DROP TABLE IF EXISTS "currency";

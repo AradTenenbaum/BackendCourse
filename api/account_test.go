@@ -2,7 +2,6 @@ package api
 
 import (
 	"bytes"
-	"context"
 	"database/sql"
 	"encoding/json"
 	"fmt"
@@ -156,14 +155,8 @@ func TestGetAccountAPI(t *testing.T) {
 }
 
 func TestCreateAccountAPI(t *testing.T) {
-
-	if testing.Short() {
-		t.Skip()
-	}
-
 	user, _ := randomUser(t)
 	account := randomAccount(user.Username)
-	// err := AddCurrencies(context.Background(), store)
 
 	testCases := []struct {
 		name          string
@@ -276,22 +269,6 @@ func TestCreateAccountAPI(t *testing.T) {
 			tc.checkResponse(recorder)
 		})
 	}
-}
-
-func AddCurrencies(ctx context.Context, store db.Store) error {
-	_, err := store.AddCurrency(ctx, util.USD)
-	if err != nil {
-		return err
-	}
-	_, err = store.AddCurrency(ctx, util.USD)
-	if err != nil {
-		return err
-	}
-	_, err = store.AddCurrency(ctx, util.USD)
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func TestListAccountsAPI(t *testing.T) {
