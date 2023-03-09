@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	db "github.com/AradTenenbaum/BackendCourse/db/sqlc"
+	"github.com/AradTenenbaum/BackendCourse/val"
 	"github.com/rs/zerolog/log"
 )
 
@@ -18,10 +19,10 @@ const (
 )
 
 func (httpServer *HttpServer) VerifyEmailHandlerFunc(res http.ResponseWriter, req *http.Request) {
-	secretCode := req.URL.Query().Get(SECRET_CODE)
-	id, err := strconv.Atoi(req.URL.Query().Get(ID))
 
 	resp := make(map[string]string)
+	secretCode := req.URL.Query().Get(SECRET_CODE)
+	id, err := strconv.Atoi(req.URL.Query().Get(ID))
 
 	if err != nil {
 		resp[MESSAGE] = fmt.Sprintf("Error in convertion: %s", err.Error())
@@ -34,7 +35,18 @@ func (httpServer *HttpServer) VerifyEmailHandlerFunc(res http.ResponseWriter, re
 		return
 	}
 
-	//TODO: validation for secret code to avoid sql injection
+	// validation for secret code to avoid sql injection
+	err = val.ValidateSecretCode(secretCode)
+	if err != nil {
+		resp[MESSAGE] = fmt.Sprintf("Error in code: %s", err.Error())
+		jsonData, err := json.Marshal(resp)
+		if err != nil {
+			log.Fatal().Err(err).Msg("Cannot marshal")
+		}
+		res.WriteHeader(http.StatusBadRequest)
+		res.Write(jsonData)
+		return
+	}
 
 	// Verify the email
 	_, err = httpServer.store.VerifyEmailTx(context.Background(), db.SetUsedVerifyEmailParams{

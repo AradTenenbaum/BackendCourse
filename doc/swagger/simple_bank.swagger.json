@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Simple Bank API",
-    "version": "1.4",
+    "version": "1.5",
     "contact": {
       "name": "Arad Tenenbaum",
       "url": "https://github.com/AradTenenbaum/BackendCourse",
@@ -157,6 +157,40 @@
         ]
       }
     },
+    "/v1/transfer": {
+      "post": {
+        "summary": "Tansfer money between accounts",
+        "description": "Use this API to transfer money between accounts",
+        "operationId": "SimpleBank_Transfer",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbTransferResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbTransferRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SimpleBank"
+        ]
+      }
+    },
     "/v1/update_user": {
       "patch": {
         "summary": "Update user",
@@ -257,6 +291,27 @@
         }
       }
     },
+    "pbEntry": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "accountId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "amount": {
+          "type": "string",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
     "pbGetAccountRequest": {
       "type": "object",
       "properties": {
@@ -307,6 +362,71 @@
         "refreshTokenExpiredAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "pbTransfer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "fromAccountId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "toAccountId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "amount": {
+          "type": "string",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "pbTransferRequest": {
+      "type": "object",
+      "properties": {
+        "fromAccountId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "toAccountId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "amount": {
+          "type": "string",
+          "format": "int64"
+        },
+        "currency": {
+          "type": "string"
+        }
+      }
+    },
+    "pbTransferResponse": {
+      "type": "object",
+      "properties": {
+        "transfer": {
+          "$ref": "#/definitions/pbTransfer"
+        },
+        "fromAccount": {
+          "$ref": "#/definitions/pbAccount"
+        },
+        "toAccount": {
+          "$ref": "#/definitions/pbAccount"
+        },
+        "fromEntry": {
+          "$ref": "#/definitions/pbEntry"
+        },
+        "toEntry": {
+          "$ref": "#/definitions/pbEntry"
         }
       }
     },

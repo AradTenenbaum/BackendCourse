@@ -5,12 +5,13 @@ The api is built using - Golang, Sqlc, PostgreSql, Redis, Github Actions CI, Doc
 You can dynamically switch between gRPC server and HTTP server by the SERVER_TYPE in the environments variables.
 The system is following the ACID principles
 
- - gRPC Functions Implemented:
+ - gRPC and HTTP Functions Implemented:
 	 - Create User: Create a user in the db, Insert a process of sending verification email into redis queue. Sending an email with a url to verify the email
 	 - Create Account: Create an account in the db for the requested user by the auth token
 	 - Login: Login in to the system, receiving a bearer token for the security, implements both jwt and paseto tokens
 	 - Get Account: Get a specific account
 	 - Update User: Update user's details
+	 - Transfer: Execute a transfer between accounts, transfer the money between them and create all db objects: transfer and entries
  - Directories order:
 	 - api: http server built with gin library
 	 - db: migrations, mock store, all the queries and sqlc functions

@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2023-03-08T10:59:58.616Z
+-- Generated at: 2023-03-09T16:10:14.595Z
 
 CREATE TABLE "users" (
   "username" varchar PRIMARY KEY,
@@ -56,6 +56,10 @@ CREATE TABLE "sessions" (
   "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 
+CREATE TABLE "currency" (
+  "desc" varchar PRIMARY KEY
+);
+
 CREATE INDEX ON "accounts" ("owner");
 
 CREATE UNIQUE INDEX ON "accounts" ("owner", "currency");
@@ -75,6 +79,8 @@ COMMENT ON COLUMN "transfers"."amount" IS 'must be positive';
 ALTER TABLE "verify_emails" ADD FOREIGN KEY ("username") REFERENCES "users" ("username");
 
 ALTER TABLE "accounts" ADD FOREIGN KEY ("owner") REFERENCES "users" ("username");
+
+ALTER TABLE "accounts" ADD FOREIGN KEY ("currency") REFERENCES "currency" ("desc");
 
 ALTER TABLE "entries" ADD FOREIGN KEY ("account_id") REFERENCES "accounts" ("id");
 

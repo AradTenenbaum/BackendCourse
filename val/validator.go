@@ -7,8 +7,9 @@ import (
 )
 
 var (
-	isValidUsername = regexp.MustCompile(`^[a-z0-9_]+$`).MatchString
-	isValidFullName = regexp.MustCompile(`^[a-zA-Z\s]+$`).MatchString
+	isValidUsername   = regexp.MustCompile(`^[a-z0-9_]+$`).MatchString
+	isValidFullName   = regexp.MustCompile(`^[a-zA-Z\s]+$`).MatchString
+	isValidSecretCode = regexp.MustCompile(`[a-z]`).MatchString
 )
 
 func ValidateString(value string, minLength int, maxLength int) error {
@@ -53,3 +54,10 @@ func ValidateEmail(value string) error {
 	return nil
 }
 
+func ValidateSecretCode(value string) error {
+	err := ValidateString(value, 32, 32)
+	if err != nil || !isValidSecretCode(value) {
+		return fmt.Errorf("secret code is not valid")
+	}
+	return nil
+}
