@@ -18,6 +18,10 @@ type Account struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
+type Currency struct {
+	Desc string `json:"desc"`
+}
+
 type Entry struct {
 	ID        int64 `json:"id"`
 	AccountID int64 `json:"account_id"`

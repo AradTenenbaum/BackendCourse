@@ -51,6 +51,21 @@ func (mr *MockStoreMockRecorder) AddAccountBalance(arg0, arg1 interface{}) *gomo
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddAccountBalance", reflect.TypeOf((*MockStore)(nil).AddAccountBalance), arg0, arg1)
 }
 
+// AddCurrency mocks base method.
+func (m *MockStore) AddCurrency(arg0 context.Context, arg1 string) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AddCurrency", arg0, arg1)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// AddCurrency indicates an expected call of AddCurrency.
+func (mr *MockStoreMockRecorder) AddCurrency(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddCurrency", reflect.TypeOf((*MockStore)(nil).AddCurrency), arg0, arg1)
+}
+
 // CreateAccount mocks base method.
 func (m *MockStore) CreateAccount(arg0 context.Context, arg1 db.CreateAccountParams) (db.Account, error) {
 	m.ctrl.T.Helper()
