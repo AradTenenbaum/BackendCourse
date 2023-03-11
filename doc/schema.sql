@@ -1,6 +1,6 @@
 -- SQL dump generated using DBML (dbml-lang.org)
 -- Database: PostgreSQL
--- Generated at: 2023-03-09T16:10:14.595Z
+-- Generated at: 2023-03-11T12:14:06.670Z
 
 CREATE TABLE "users" (
   "username" varchar PRIMARY KEY,
@@ -56,7 +56,7 @@ CREATE TABLE "sessions" (
   "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 
-CREATE TABLE "currency" (
+CREATE TABLE "currencies" (
   "desc" varchar PRIMARY KEY
 );
 
@@ -79,8 +79,6 @@ COMMENT ON COLUMN "transfers"."amount" IS 'must be positive';
 ALTER TABLE "verify_emails" ADD FOREIGN KEY ("username") REFERENCES "users" ("username");
 
 ALTER TABLE "accounts" ADD FOREIGN KEY ("owner") REFERENCES "users" ("username");
-
-ALTER TABLE "accounts" ADD FOREIGN KEY ("currency") REFERENCES "currency" ("desc");
 
 ALTER TABLE "entries" ADD FOREIGN KEY ("account_id") REFERENCES "accounts" ("id");
 

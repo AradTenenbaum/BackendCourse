@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Simple Bank API",
-    "version": "1.5",
+    "version": "1.6",
     "contact": {
       "name": "Arad Tenenbaum",
       "url": "https://github.com/AradTenenbaum/BackendCourse",
@@ -81,6 +81,40 @@
             "required": true,
             "schema": {
               "$ref": "#/definitions/pbCreateUserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SimpleBank"
+        ]
+      }
+    },
+    "/v1/deposit": {
+      "post": {
+        "summary": "Deposit money to account",
+        "description": "Use this API to deposit money to your account",
+        "operationId": "SimpleBank_Deposit",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbDepositResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbDepositRequest"
             }
           }
         ],
@@ -224,6 +258,40 @@
           "SimpleBank"
         ]
       }
+    },
+    "/v1/withdraw": {
+      "post": {
+        "summary": "Withdraw money from account",
+        "description": "Use this API to withdraw money from your account",
+        "operationId": "SimpleBank_Withdraw",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbWithdrawResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbWithdrawRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SimpleBank"
+        ]
+      }
     }
   },
   "definitions": {
@@ -288,6 +356,30 @@
       "properties": {
         "user": {
           "$ref": "#/definitions/pbUser"
+        }
+      }
+    },
+    "pbDepositRequest": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "amount": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbDepositResponse": {
+      "type": "object",
+      "properties": {
+        "newEntry": {
+          "$ref": "#/definitions/pbEntry"
+        },
+        "account": {
+          "$ref": "#/definitions/pbAccount"
         }
       }
     },
@@ -474,6 +566,30 @@
         "createdAt": {
           "type": "string",
           "format": "date-time"
+        }
+      }
+    },
+    "pbWithdrawRequest": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "amount": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbWithdrawResponse": {
+      "type": "object",
+      "properties": {
+        "newEntry": {
+          "$ref": "#/definitions/pbEntry"
+        },
+        "account": {
+          "$ref": "#/definitions/pbAccount"
         }
       }
     },

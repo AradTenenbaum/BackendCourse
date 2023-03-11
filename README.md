@@ -11,7 +11,9 @@ The system is following the ACID principles
 	 - Login: Login in to the system, receiving a bearer token for the security, implements both jwt and paseto tokens
 	 - Get Account: Get a specific account
 	 - Update User: Update user's details
-	 - Transfer: Execute a transfer between accounts, transfer the money between them and create all db objects: transfer and entries
+	 - Transfer: Execute a transfer between accounts, transfer the money between them and create all needed db objects - transfer and entries
+	 - Deposit: Increase the balance of a specific account
+	 - Withdraw: Decrease the balance of a specific account
  - Directories order:
 	 - api: http server built with gin library
 	 - db: migrations, mock store, all the queries and sqlc functions

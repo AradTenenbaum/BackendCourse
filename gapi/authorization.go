@@ -21,13 +21,14 @@ func (server *Server) authorizeUser(ctx context.Context) (*token.Payload, error)
 	}
 
 	values := md.Get(authorizationHeader)
+
 	if len(values) == 0 {
 		return nil, fmt.Errorf("missing authorization header")
 	}
 
 	authHeader := values[0]
 	fields := strings.Fields(authHeader)
-	if len(fields) == 0 {
+	if len(fields) <= 1 {
 		return nil, fmt.Errorf("invalid authorization header format")
 	}
 

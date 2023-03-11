@@ -1,4 +1,3 @@
 
--- ALTER TABLE "accounts" DROP CONSTRAINT ("currency");
 
-DROP TABLE IF EXISTS "currency";
+DROP TABLE IF EXISTS "currencies";

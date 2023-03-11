@@ -29,7 +29,7 @@ Table accounts as A {
   id bigserial [pk]
   owner varchar [ref: > U.username, not null]
   balance bigint [not null]
-  currency varchar [ref: > currency.desc, not null]
+  currency varchar [not null]
   created_at timestamptz [not null, default: `now()`]
   
   Indexes {
@@ -74,6 +74,6 @@ Table sessions {
   created_at timestamptz [not null, default: `now()`]
 }
 
-Table currency {
+Table currencies {
   desc varchar [pk]
 }

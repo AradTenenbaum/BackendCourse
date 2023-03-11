@@ -12,6 +12,8 @@ type Store interface {
 	TransferTx(ctx context.Context, arg TransferTxParams) (TransferTxResult, error)
 	CreateUserTx(ctx context.Context, arg CreateUserTxParams) (CreateUserTxResult, error)
 	VerifyEmailTx(ctx context.Context, arg SetUsedVerifyEmailParams) (VerifyEmailTxResult, error)
+	DepositTx(ctx context.Context, arg DepositTxParams) (DepositTxResult, error)
+	WithdrawTx(ctx context.Context, arg WithdrawTxParams) (WithdrawTxResult, error)
 }
 
 // Create a struct to support transactions, Queries does'nt support

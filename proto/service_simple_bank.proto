@@ -9,6 +9,8 @@ import "rpc_login_user.proto";
 import "rpc_create_account.proto";
 import "rpc_get_account.proto";
 import "rpc_transfer.proto";
+import "rpc_deposit.proto";
+import "rpc_withdraw.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/AradTenenbaum/BackendCourse/pb";
@@ -16,7 +18,7 @@ option go_package = "github.com/AradTenenbaum/BackendCourse/pb";
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
     title: "Simple Bank API";
-    version: "1.5";
+    version: "1.6";
     contact: {
       name: "Arad Tenenbaum";
       url: "https://github.com/AradTenenbaum/BackendCourse";
@@ -84,6 +86,26 @@ service SimpleBank {
       option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
         description: "Use this API to transfer money between accounts";
         summary: "Tansfer money between accounts";
+      };
+    }
+    rpc Deposit (DepositRequest) returns (DepositResponse) {
+      option (google.api.http) = {
+          post: "/v1/deposit"
+          body: "*"
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        description: "Use this API to deposit money to your account";
+        summary: "Deposit money to account";
+      };
+    }
+    rpc Withdraw (WithdrawRequest) returns (WithdrawResponse) {
+      option (google.api.http) = {
+          post: "/v1/withdraw"
+          body: "*"
+      };
+      option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+        description: "Use this API to withdraw money from your account";
+        summary: "Withdraw money from account";
       };
     }
 }
